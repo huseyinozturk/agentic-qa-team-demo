@@ -1,0 +1,5 @@
+{
+  "startedAt": "2025-03-14T10:05:00Z",
+  "platform": "ios",
+  "flows": { "auth-004": { "ok": true, "durationMs": 44800 } }
+}

@@ -1,0 +1,10 @@
+# Shared subflow: top up the wallet. Pass AMOUNT via env.
+appId: com.example.tokenestate
+---
+- tapOn:
+    id: "tab-wallet"
+- tapOn:
+    id: "topup-amount-input"
+- inputText: ${AMOUNT}
+- tapOn:
+    id: "topup-submit-button"

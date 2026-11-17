@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "TokenEstate",
+    "slug": "tokenestate-demo",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "ios": { "bundleIdentifier": "com.example.tokenestate" },
+    "android": { "package": "com.example.tokenestate" }
+  }
+}

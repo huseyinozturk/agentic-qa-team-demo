@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "defaultMode": "dontAsk",
+    "allow": [
+      "Read(./**)", "Grep(./**)", "Glob(./**)",
+      "Edit(docs/cases/drafts/**)", "Write(docs/cases/drafts/**)",
+      "Edit(docs/qa-team/lead/tasks/**)", "Write(docs/qa-team/lead/tasks/**)"
+    ],
+    "deny": ["Bash", "WebFetch", "WebSearch", "mcp__*", "Read(./.env*)", "Read(~/.ssh/**)"]
+  }
+}

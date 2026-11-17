@@ -1,0 +1,7 @@
+# Shared subflow: open the first property.
+appId: com.example.tokenestate
+---
+- tapOn:
+    id: "tab-properties"
+- tapOn:
+    id: "property-card-prop-harbour-01"

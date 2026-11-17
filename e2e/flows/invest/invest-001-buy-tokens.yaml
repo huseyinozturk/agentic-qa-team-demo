@@ -1,0 +1,25 @@
+# case: invest-001
+# tickets: [TE-130]
+appId: com.example.tokenestate
+name: Buy tokens with wallet balance
+tags:
+  - smoke
+---
+- runFlow: ../../subflows/sign-in.yaml
+- runFlow:
+    file: ../../subflows/top-up.yaml
+    env:
+      AMOUNT: "500"
+- runFlow: ../../subflows/open-harbour.yaml
+- tapOn:
+    id: "buy-tokens-button"
+- tapOn:
+    id: "token-quantity-input"
+- inputText: "10"
+- assertVisible:
+    id: "buy-total-text"
+    text: "Total USD 250.00"
+- tapOn:
+    id: "buy-confirm-button"
+- assertVisible:
+    id: "buy-success-text"

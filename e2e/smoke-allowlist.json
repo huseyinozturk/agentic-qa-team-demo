@@ -1,0 +1,4 @@
+{
+  "_note": "Only the owner edits this file. Lint rejects a smoke tag on any case that is not listed here.",
+  "cases": ["auth-001", "wallet-001", "property-001", "invest-001"]
+}

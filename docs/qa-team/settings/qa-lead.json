@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "defaultMode": "dontAsk",
+    "allow": [
+      "Read(./**)", "Grep(./**)", "Glob(./**)",
+      "Edit(docs/qa-team/lead/**)", "Write(docs/qa-team/lead/**)",
+      "Bash(node runner/src/cli.ts lint)", "Bash(node runner/src/cli.ts list)",
+      "Bash(node runner/src/cli.ts report:*)", "Bash(node scripts/lead-check.ts:*)"
+    ],
+    "deny": ["WebFetch", "WebSearch", "Read(./.env*)", "Read(~/.ssh/**)"]
+  }
+}

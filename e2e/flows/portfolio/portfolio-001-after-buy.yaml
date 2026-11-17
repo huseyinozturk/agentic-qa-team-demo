@@ -1,0 +1,31 @@
+# case: portfolio-001
+# tickets: [TE-140]
+appId: com.example.tokenestate
+name: Portfolio reflects a purchase
+tags:
+  - regression
+---
+- runFlow: ../../subflows/sign-in.yaml
+- runFlow:
+    file: ../../subflows/top-up.yaml
+    env:
+      AMOUNT: "500"
+- tapOn:
+    id: "tab-portfolio"
+- assertVisible:
+    id: "portfolio-empty-text"
+- runFlow: ../../subflows/open-harbour.yaml
+- tapOn:
+    id: "buy-tokens-button"
+- tapOn:
+    id: "token-quantity-input"
+- inputText: "10"
+- tapOn:
+    id: "buy-confirm-button"
+- assertVisible:
+    id: "buy-success-text"
+- tapOn:
+    id: "tab-portfolio"
+- assertVisible:
+    id: "portfolio-total-value-text"
+    text: "USD 250.00"

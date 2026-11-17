@@ -1,0 +1,16 @@
+{
+  "name": "qa-agents-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A runnable demo of an agentic QA team (five Claude agents) testing a mock mobile app.",
+  "type": "module",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "backend": "node mock-backend/server.mjs",
+    "lint:flows": "node runner/src/cli.ts lint",
+    "report": "node runner/src/cli.ts report",
+    "test": "node --test \"mock-backend/test/*.test.mjs\" \"runner/test/*.test.ts\"",
+    "demo": "./scripts/demo.sh",
+    "privacy": "./scripts/privacy-check.sh"
+  }
+}

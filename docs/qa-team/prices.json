@@ -1,0 +1,5 @@
+{
+  "_note": "PLACEHOLDER rates in USD per million tokens, used only to recompute the demo cost log. Check the current price list before trusting any number.",
+  "opus":   { "input": 4, "output": 20 },
+  "sonnet": { "input": 2, "output": 10 }
+}

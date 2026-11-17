@@ -1,0 +1,10 @@
+{
+  "_note": "Single source for model, trigger, budget and write scope per role. scripts/check-agents.ts verifies the agent files against it; scripts/run-agent.sh reads the budget.",
+  "roles": {
+    "qa-lead":             { "model": "opus",   "trigger": "owner, interactive",          "budgetUsd": 3, "tools": ["Read", "Grep", "Glob", "Edit", "Write", "Agent", "Bash"], "writes": ["docs/qa-team/lead/"] },
+    "watcher":             { "model": "sonnet", "trigger": "weekday morning, on request", "budgetUsd": 1, "tools": ["Read", "Grep", "Glob", "Write"],                         "writes": ["docs/qa-team/watch/"] },
+    "analyst":             { "model": "opus",   "trigger": "task file from the lead",     "budgetUsd": 2, "tools": ["Read", "Grep", "Glob", "Edit", "Write"],                  "writes": ["docs/cases/drafts/"] },
+    "automation-engineer": { "model": "sonnet", "trigger": "task file from the lead",     "budgetUsd": 2, "tools": ["Read", "Grep", "Glob", "Edit", "Write", "Bash"],          "writes": ["e2e/flows/", "e2e/subflows/"] },
+    "runner":              { "model": "sonnet", "trigger": "nightly, on request",         "budgetUsd": 1, "tools": ["Read", "Grep", "Glob", "Write", "Bash"],                  "writes": ["docs/qa-team/runs/"] }
+  }
+}

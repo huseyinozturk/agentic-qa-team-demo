@@ -1,0 +1,54 @@
+{
+  "startedAt": "2025-03-13T22:00:00Z",
+  "platform": "ios",
+  "flows": {
+    "auth-001": {
+      "ok": true,
+      "durationMs": 41200
+    },
+    "auth-002": {
+      "ok": true,
+      "durationMs": 36500
+    },
+    "auth-003": {
+      "ok": false,
+      "durationMs": 52800,
+      "error": "Assertion is false: id: otp-delivered-banner is visible (waited 25000ms)",
+      "hints": {
+        "backendOtpDelayMs": 30000
+      }
+    },
+    "invest-001": {
+      "ok": false,
+      "durationMs": 63400,
+      "error": "Element not found: Id matching regex: buy-confirm-button"
+    },
+    "invest-002": {
+      "ok": true,
+      "durationMs": 45100
+    },
+    "portfolio-001": {
+      "ok": false,
+      "durationMs": 71900,
+      "error": "Assertion is false: id: portfolio-total-value-text, text: \"USD 250.00\" is visible (found \"USD 0.00\")"
+    },
+    "property-001": {
+      "ok": false,
+      "durationMs": 38700,
+      "error": "Maestro driver did not start within 120s (device offline: simulator not responding)"
+    },
+    "wallet-001": {
+      "ok": true,
+      "durationMs": 68585
+    },
+    "wallet-002": {
+      "ok": true,
+      "durationMs": 44000
+    },
+    "wallet-003": {
+      "ok": false,
+      "durationMs": 46200,
+      "error": "Assertion is false: id: wallet-balance-text, text: \"USD 100.00\" is visible (found \"USD 200.00\")"
+    }
+  }
+}
