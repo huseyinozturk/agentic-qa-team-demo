@@ -6,7 +6,7 @@ Everything is fake: the app, the backend, the tickets, the chat. It needs no com
 
 ## Live demo (no install)
 
-**Animated walkthrough:** `https://<username>.github.io/<repo>/` (GitHub Pages: Settings → Pages → Source: branch `main`, folder `/docs`). It plays the six phases of a team starting on a new project, from the real output of the demo. Replace `<username>` and `<repo>` after publishing.
+**Animated walkthrough:** [huseyinozturk.github.io/agentic-qa-team-demo](https://huseyinozturk.github.io/agentic-qa-team-demo/). It plays the six phases of a team starting on a new project, from the real output of the demo.
 
 To browse the raw results without running anything: [docs/example-output/](docs/example-output/).
 
@@ -15,7 +15,7 @@ To browse the raw results without running anything: [docs/example-output/](docs/
 Prerequisites: **Node 22.18 or newer** (the TypeScript scripts run directly, no build) and `bash`. Nothing to install for the demo itself.
 
 ```bash
-git clone https://github.com/<your-user>/agentic-qa-team-demo && cd agentic-qa-team-demo
+git clone https://github.com/huseyinozturk/agentic-qa-team-demo && cd agentic-qa-team-demo
 ./scripts/demo.sh
 ```
 

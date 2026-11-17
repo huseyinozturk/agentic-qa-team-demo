@@ -5,8 +5,8 @@
 set -u
 cd "$(dirname "$0")/.."
 
-# base64 of: company name, product name, vendor-key prefix, two personal handles, a first name
-ENCODED_TERMS=(cHJ5cGNv c3VwZXJhcHA= YmF1bWludA== aHVzZXlpbg== b3p0dXJr ZnJhbmNlc2Nv)
+# base64 of: company name, product name, vendor-key prefix, a first name
+ENCODED_TERMS=(cHJ5cGNv c3VwZXJhcHA= YmF1bWludA== ZnJhbmNlc2Nv)
 # plain patterns: tracker keys of real projects, decision/ADR numbers, a word that collides with a product name
 PLAIN_TERMS=('\bONB-[0-9]' '\bINV-[0-9]' '\bMINT-[0-9]' '\bBAU[A-Z]*-[0-9]' '\bADR-?[0-9]+\b' '\bD[0-9]{2}\b' '\bmint\b' '/Users/[A-Za-z0-9._-]+' 'internal\.' '\.atlassian\.net' 'figma\.com/(file|design)' 'hooks\.slack\.com')
 SECRET_TERMS=('sk-ant-[A-Za-z0-9]{8,}' 'xox[abprs]-[0-9A-Za-z-]{8,}' 'AKIA[0-9A-Z]{12,}' 'ghp_[A-Za-z0-9]{20,}' '-----BEGIN [A-Z ]*PRIVATE KEY-----')
@@ -42,7 +42,7 @@ done
 # 3. URLs and e-mail addresses: only placeholder or well-known documentation hosts
 url_hits=$(files | xargs grep -I -n -o -E "https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+" 2>/dev/null \
   | grep -v '^scripts/privacy-check.sh:' \
-  | grep -v -E '://(localhost|127\.0\.0\.1|[a-z.-]*example\.(test|com)|docs\.expo\.dev|expo\.dev|docs\.maestro\.dev|maestro\.mobile\.dev|docs\.claude\.com|code\.claude\.com|claude\.com|www\.anthropic\.com|nodejs\.org|github\.com|mermaid\.js\.org|www\.w3\.org)' | head -5)
+  | grep -v -E '://(localhost|127\.0\.0\.1|[a-z.-]*example\.(test|com)|docs\.expo\.dev|expo\.dev|docs\.maestro\.dev|maestro\.mobile\.dev|docs\.claude\.com|code\.claude\.com|claude\.com|www\.anthropic\.com|nodejs\.org|github\.com|[a-z0-9-]+\.github\.io|mermaid\.js\.org|www\.w3\.org)' | head -5)
 [ -n "$url_hits" ] && { echo "$url_hits"; report "URL outside the allowlist"; }
 mail_hits=$(files | xargs grep -I -n -o -E "[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z.]+" 2>/dev/null | grep -v -E '@(example\.(test|com)|users\.noreply\.github\.com)' | grep -v -e '^scripts/privacy-check.sh:' -e 'noreply@anthropic.com' | head -5)
 [ -n "$mail_hits" ] && { echo "$mail_hits"; report "e-mail address outside example.test"; }
