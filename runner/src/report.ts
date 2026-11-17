@@ -38,7 +38,7 @@ export function nightlyReport(): { text: string; date: string } {
 
   const L: string[] = [];
   L.push(`# Nightly report ${date}`, '');
-  L.push(`Batch: \`${cur.id}\` (${cur.runs[0].mode} run). Source: \`results/runs.jsonl\`. Counts are computed by \`runner report --nightly\`, not estimated.`, '');
+  L.push(`Batch: \`${cur.id}\` (${cur.runs[0].mode} run, environment \`${cur.runs[0].env}\`). Source: \`results/runs.jsonl\`. Counts are computed by \`runner report --nightly\`, not estimated.`, '');
   L.push('## Result', '');
   for (const p of platforms) {
     const rs = cur.runs.filter((r) => r.platform === p);
@@ -63,6 +63,20 @@ export function nightlyReport(): { text: string; date: string } {
   L.push(`- Total: ${sec(total)}${prev ? ` (last night ${sec(prev.runs.reduce((s, r) => s + r.durationMs, 0))})` : ''}`);
   const slow = cur.runs.filter((r) => prevDur.has(r.caseId) && r.durationMs > prevDur.get(r.caseId)! * 1.3);
   L.push(`- Runs more than 30% slower than last night: ${slow.map((r) => `${r.caseId} (${sec(prevDur.get(r.caseId)!)} -> ${sec(r.durationMs)})`).join(', ') || 'none'}`);
+  const h = cur.runs[0].host, ph = prev?.runs[0].host;
+  L.push('', '## System (host the devices run on)', '');
+  if (h) {
+    const d = (old?: number, unit = '') => (old === undefined ? '' : ` (last night ${old}${unit})`);
+    L.push(`- Peak CPU: ${h.peakCpuPct}%${d(ph?.peakCpuPct, '%')}`);
+    L.push(`- Minimum free memory: ${h.minFreeMemMb} MB${d(ph?.minFreeMemMb, ' MB')}`);
+    L.push(`- Swap used: ${h.swapGb} GB${d(ph?.swapGb, ' GB')}`);
+    L.push(`- Disk free: ${h.diskFreeGb} GB${d(ph?.diskFreeGb, ' GB')}`);
+    const warn: string[] = [];
+    if (h.swapGb > 4) warn.push(`swap above 4 GB${failed.some((r) => r.failureClass === 'driver') ? ': this can make the device driver fail, so the driver failure above may be load, not the app' : ''}`);
+    if (h.minFreeMemMb < 1000) warn.push('free memory under 1000 MB');
+    if (h.diskFreeGb < 20) warn.push('free disk under 20 GB');
+    L.push(warn.length ? `- **Attention:** ${warn.join('; ')}` : '- All host metrics within limits.');
+  } else L.push('- No host metrics recorded.');
   L.push('', '## Notes', '', '- Failure classes are suggestions. A person confirms them (a "selector" class can hide an app bug).',
     '- Known findings are listed in `docs/qa-team/runs/known-findings.md` (owner-edited).', '');
   return { text: L.join('\n'), date };

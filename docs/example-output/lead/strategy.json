@@ -1,0 +1,21 @@
+{
+  "_note": "Recorded sample of the QA Lead's output: which test type fits which ticket.",
+  "types": { "unit": "pure logic, no UI, no network", "api": "backend behaviour through the API", "e2e-fe": "end-to-end through the app UI" },
+  "items": [
+    { "ticket": "TE-101", "types": ["e2e-fe"], "why": "A user journey through two screens." },
+    { "ticket": "TE-102", "types": ["e2e-fe", "api"], "why": "Banner is UI; code validity is a backend rule." },
+    { "ticket": "TE-110", "types": ["e2e-fe"], "why": "Visible result of a top-up." },
+    { "ticket": "TE-111", "types": ["e2e-fe"], "why": "Visible error on a declined payment." },
+    { "ticket": "TE-112", "types": ["api", "e2e-fe"], "why": "Root cause is in the backend; the user impact is a wrong balance." },
+    { "ticket": "TE-113", "types": ["api"], "why": "No UI involved." },
+    { "ticket": "TE-114", "types": ["unit"], "why": "One pure rounding function." },
+    { "ticket": "TE-120", "types": ["e2e-fe"], "why": "Browsing is a UI journey." },
+    { "ticket": "TE-130", "types": ["e2e-fe"], "why": "The core purchase journey." },
+    { "ticket": "TE-131", "types": ["e2e-fe"], "why": "Visible refusal message." },
+    { "ticket": "TE-140", "types": ["e2e-fe"], "why": "Stale data is only visible in the UI." },
+    { "ticket": "TE-150", "types": ["e2e-fe", "api"], "why": "Sign-out is UI; session invalidation is an API rule." },
+    { "ticket": "TE-160", "types": ["api", "e2e-fe"], "why": "The limit is enforced by the backend and shown in the UI." },
+    { "ticket": "TE-170", "types": ["none"], "why": "Infrastructure only." }
+  ],
+  "environments": ["local (mock backend)", "staging"]
+}

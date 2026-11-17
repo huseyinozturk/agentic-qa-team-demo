@@ -1,0 +1,25 @@
+# case: auth-002
+# tickets: [TE-101]
+appId: com.example.tokenestate
+name: Invalid OTP is rejected
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: "email-input"
+- inputText: "demo@example.test"
+- tapOn:
+    id: "send-otp-button"
+- extendedWaitUntil:
+    visible:
+      id: "otp-delivered-banner"
+    timeout: 10000
+- tapOn:
+    id: "otp-input"
+- inputText: "000000"
+- tapOn:
+    id: "verify-otp-button"
+- assertVisible:
+    id: "otp-error-text"

@@ -1,7 +1,10 @@
 date	role	model	mode	input_tokens	output_tokens	usd	task
-2025-03-14	watcher	sonnet	recorded	152000	9800	0.4020	2025-03-14-watch-morning
+2025-03-10	qa-lead	opus	recorded	140000	12000	0.8000	2025-03-10-intake-strategy
+2025-03-10	analyst	opus	recorded	300000	30000	1.8000	2025-03-10-cases-core
+2025-03-11	automation-engineer	sonnet	recorded	300000	30000	0.9000	2025-03-11-flows-core
 2025-03-14	runner	sonnet	recorded	98000	7600	0.2720	2025-03-14-nightly-report
-2025-03-14	analyst	opus	recorded	210000	21000	1.2600	2025-03-14-case-topup-limit
-2025-03-14	analyst	opus	recorded	40000	3000	0.2200	2025-03-14-case-portfolio-refresh
-2025-03-14	automation-engineer	sonnet	recorded	260000	26000	0.7800	2025-03-14-flow-sign-out
-2025-03-14	qa-lead	opus	recorded	120000	11000	0.7000	2025-03-14-review
+2025-03-14	watcher	sonnet	recorded	152000	9800	0.4020	2025-03-14-watch-morning
+2025-03-14	qa-lead	opus	recorded	120000	11000	0.7000	2025-03-14-review-and-tickets
+2025-03-14	analyst	opus	recorded	45000	4000	0.2600	2025-03-14-cases-profile
+2025-03-14	automation-engineer	sonnet	recorded	90000	8000	0.2600	2025-03-14-flow-sign-out
+2025-03-14	analyst	opus	recorded	40000	3000	0.2200	2025-03-14-cases-portfolio-sell

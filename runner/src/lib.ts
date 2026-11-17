@@ -38,7 +38,11 @@ export type RunRecord = {
   logPath: string | null;
   backendMode: string;
   mode: 'recorded' | 'live';
+  env: string;
+  host?: HostMetrics;
 };
+
+export type HostMetrics = { peakCpuPct: number; minFreeMemMb: number; swapGb: number; diskFreeGb: number };
 
 export type Config = {
   appId: string;

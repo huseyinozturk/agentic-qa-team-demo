@@ -24,9 +24,18 @@ This is the design behind the demo, written generically. It targets one person w
 
 Why this split: writing a case is judgement over sources, so it gets the stronger model; writing a flow is pattern work with fast feedback (lint, a run), so a cheaper model is enough. Reading-heavy work (the Watcher) goes to the cheaper model, and the judgement over it stays with the Analyst and the owner. The model assignment is a starting hypothesis to be revised with measured cost and quality.
 
+## 2b. The lifecycle on a project that is new to the team
+
+1. **Intake (QA Lead).** Collect the project documents and tickets, group them by area, decide per item which test type fits: `unit`, `api`, `e2e-fe`. Write the strategy and the test plan (which suite runs where and when).
+2. **Cases (Analyst).** Write cases per type. Sources have a ranking (product requirements, API specification, design notes, ticket criteria; comments and chat never count alone). Every case, step and expectation names its source. Where sources disagree, the Analyst drafts a clarification for the people who own them, works with the higher source as an assumption, and completes the case only when the answer is written down. It proposes the `smoke`, `critical` and `regression` suites; the owner approves the first two.
+3. **Scripts (Automation engineer).** Convert ready cases for the *selected* framework. Check that every UI element a case names has a testID in the app, and write down what is missing. Run each script once; real failures stay failing.
+4. **Runs (Runner).** Execute the plan: smoke on every build, regression nightly, critical before a release, in the planned environments. Report per test (failure class and evidence) and per host resource (CPU, memory, swap, disk, duration) to the Lead.
+5. **Findings (QA Lead).** Read the report, draft tickets and comments with evidence. Filing is an outward action: the owner approves each draft.
+6. **Watching (Watcher), in parallel.** Follow the tracker and the chat channels, collect the day's developments and pass them to the Lead. Example: a ticket labelled `e2e` moves to the test status, so the Lead has the case written and the script built, and the ticket becomes part of the suites. Informal channels are scanned only for what matters to testing.
+
 ### QA Lead
-- **Inputs:** the owner's request, handoff files.
-- **Outputs:** task briefs, review notes, drafts of outward messages for the owner.
+- **Inputs:** the owner's request, project documents and tickets, the Runner's reports, the Watcher's reports, handoff files.
+- **Outputs:** strategy and test plan, task briefs, draft tickets, review notes, drafts of outward messages for the owner.
 - **Tools:** read everything; edit under `docs/qa-team/lead/`; run lint, report and the check script; start the other roles. Outward tools only after the owner's yes for that one action.
 - **Approval points:** every outward action, every change to the `smoke` tag set, every deletion outside run artifacts.
 

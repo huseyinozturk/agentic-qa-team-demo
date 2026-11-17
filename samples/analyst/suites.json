@@ -1,0 +1,6 @@
+{
+  "_note": "Proposed by the Analyst. The owner approves smoke and critical in e2e/smoke-allowlist.json.",
+  "smoke": ["auth-001", "wallet-001", "property-001", "invest-001"],
+  "critical": ["wallet-003", "invest-002", "portfolio-001", "api-001"],
+  "regression": "every other ready case"
+}

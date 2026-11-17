@@ -19,13 +19,13 @@ export function appTestIds(): string[] {
   return [...new Set(ids)];
 }
 
-const idMatches = (selector: string, ids: string[]) =>
+export const idMatches = (selector: string, ids: string[]) =>
   ids.some((id) => id === selector || (id.includes('${') && new RegExp('^' + id.replace(/\$\{[^}]*\}/g, '.+') + '$').test(selector)));
 
 export function lint(): { errors: string[]; checked: number; ids: number } {
   const errors: string[] = [];
   const cfg = loadConfig();
-  const allow = readJson<{ cases: string[] }>(path.join(E2E_DIR, 'smoke-allowlist.json')).cases;
+  const allow = readJson<Record<'smoke' | 'critical', string[]>>(path.join(E2E_DIR, 'smoke-allowlist.json'));
   const ids = appTestIds();
 
   for (const id of ids) {
@@ -41,7 +41,7 @@ export function lint(): { errors: string[]; checked: number; ids: number } {
     if (!f.name) at('"name" missing');
     if (!f.tags.length) at('"tags" missing');
     for (const t of f.tags) if (!cfg.allowedTags.includes(t)) at(`tag "${t}" is not allowed`);
-    if (f.tags.includes('smoke') && !allow.includes(f.caseId)) at(`tag "smoke" needs the owner to list ${f.caseId} in e2e/smoke-allowlist.json`);
+    for (const t of ['smoke', 'critical'] as const) if (f.tags.includes(t) && !allow[t].includes(f.caseId)) at(`tag "${t}" needs the owner to list ${f.caseId} in e2e/smoke-allowlist.json`);
     if (!MODES.includes(f.backendMode)) at(`unknown backend-mode "${f.backendMode}"`);
     if (!path.basename(f.file).startsWith(f.caseId)) at(`file name should start with the case id "${f.caseId}"`);
     if (seen.has(f.caseId)) at(`duplicate case id (also in ${seen.get(f.caseId)})`);

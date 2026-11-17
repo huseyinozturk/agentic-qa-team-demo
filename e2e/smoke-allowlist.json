@@ -1,4 +1,5 @@
 {
-  "_note": "Only the owner edits this file. Lint rejects a smoke tag on any case that is not listed here.",
-  "cases": ["auth-001", "wallet-001", "property-001", "invest-001"]
+  "_note": "Owner-approved membership of the smoke and critical suites. The Analyst proposes (docs/cases/suites.json), the owner approves here. Lint rejects a smoke or critical tag on any case that is not listed.",
+  "smoke": ["auth-001", "wallet-001", "property-001", "invest-001"],
+  "critical": ["wallet-003", "invest-002", "portfolio-001"]
 }

@@ -1,9 +1,10 @@
 {
   "appId": "com.example.tokenestate",
   "backendUrl": "http://localhost:4010",
-  "allowedTags": ["smoke", "regression"],
+  "allowedTags": ["smoke", "critical", "regression"],
   "suites": {
     "smoke": { "tags": ["smoke"] },
-    "regression": { "tags": ["regression", "smoke"] }
+    "critical": { "tags": ["critical", "smoke"] },
+    "regression": { "tags": ["regression", "critical", "smoke"] }
   }
 }

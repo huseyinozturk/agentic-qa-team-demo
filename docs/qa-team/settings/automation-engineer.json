@@ -5,7 +5,7 @@
       "Read(./**)", "Grep(./**)", "Glob(./**)",
       "Edit(e2e/flows/**)", "Write(e2e/flows/**)", "Edit(e2e/subflows/**)", "Write(e2e/subflows/**)",
       "Edit(docs/qa-team/lead/tasks/**)", "Write(docs/qa-team/lead/tasks/**)",
-      "Bash(node runner/src/cli.ts lint)", "Bash(node runner/src/cli.ts list)",
+      "Bash(node runner/src/cli.ts lint)", "Bash(node runner/src/cli.ts list)", "Bash(node runner/src/cli.ts testids)",
       "Bash(node runner/src/cli.ts run --flow:*)", "Bash(node runner/src/cli.ts lock status)"
     ],
     "deny": ["WebFetch", "WebSearch", "mcp__*", "Read(./.env*)", "Read(~/.ssh/**)"]

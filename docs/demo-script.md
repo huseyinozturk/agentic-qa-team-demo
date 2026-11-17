@@ -2,49 +2,47 @@
 
 Audience: a hiring manager or a QA/engineering lead. Goal: show that you design an *agentic QA process* with controls, not a chatbot that writes tests.
 
-Setup: a terminal with the repo, `./scripts/demo.sh --pause` ready, `docs/design.md` and the Mermaid diagram in the README open in another tab. Total runtime about 10 minutes; the numbers in brackets are minutes.
+Setup: `./scripts/demo.sh` already run once, `docs/visual/index.html` open full screen (the visual is the main stage; the terminal is the proof). Arrow keys move between scenes.
 
-## 0. The pitch [0:30]
-"I own end-to-end testing alone. Most of my week is repeatable: reading what changed, turning tickets into cases, writing flows, triaging the nightly. I built a team of five agents that does the repeatable part. Every decision and every outward action stays with me."
+## 0. The pitch [0:45] (Overview scene)
+"Imagine this team meets a project for the first time. I built five agents and one rule: agents draft, the human approves anything that leaves the building."
 
-Show the architecture diagram. Point at three things: the fetch step is the only thing that touches outside systems; the Watcher cannot reach the network; the owner sits at the end of every outward arrow.
+Press Play on the animated diagram and walk the six phases (it highlights who talks to whom). Point out: the owner sits at every outward arrow; the Watcher is the only one looking outward, and it cannot act.
 
-## 1. The team and its guard rails [1:00] (steps 0 and 1)
-- Five agent files, each with a tool allowlist, trigger and budget cap. The two readers have no shell.
-- The hook self-test: "git push is blocked, a comment on the tracker is blocked unless I approve that one tool."
-- Line to say: "The prompt explains the rule; the hook enforces it."
+## 1. Phase 1: the Lead plans [1:00] (scene "1 · Plan")
+- Three documents (ranked) and fourteen tickets, grouped by area.
+- The Lead decides the test type per ticket: unit, API, end-to-end. "If a user can see it, it gets an end-to-end case; if the rule lives in the backend, an API case too."
+- The plan: smoke on every build, regression nightly, critical before a release.
 
-## 2. A reproducible product [1:00] (step 2)
-Failure modes of the mock backend: delayed OTP, declined payment, duplicate webhook. "A flaky test is often a flaky environment; I want to switch the environment on purpose." The duplicate webhook shows a seeded app bug (balance 200 instead of 100).
+## 2. Phase 2: the Analyst [1:45] (scene "2 · Cases")
+- The source ladder: product requirements beat the API spec beat design notes.
+- Two real conflicts (code validity 10 vs 15 minutes, daily limit 5000 vs 10000). "The Analyst does not pick silently. It drafts a question to the team that owns the lower document. The owner sends it. The answer is written down, then the case is complete."
+- One question stays open, so one case stays blocked. "No guessing."
+- The meter "every step has a source" (all of them).
 
-## 3. The E2E layer [1:30] (steps 3 and 4)
-- `lint`: flow headers (case id, tickets, tags), selectors must exist in the app, `smoke` tag needs my allowlist, nothing may hide a failure. Show the bad flow being rejected.
-- Two nightly runs, then the nightly report: failure classes with evidence, "known finding" versus "new since last night", durations.
-- Talking point: "The runner counts, the model never counts. The model reads logs and writes judgement."
-- Point at `invest-001`: suggested class `selector`, flagged as doubtful. "The agent suggests, I confirm. A selector failure can be an app bug."
+## 3. Phase 3: scripts [1:00] (scene "3 · Scripts")
+- Funnel: cases → automated, waiting for a missing testID, blocked by a question.
+- The first run finds two app bugs. "They stay red. The engineer is not allowed to skip or hide a failure."
 
-## 4. One device, one driver [0:30] (step 5)
-The run lock refusing the second driver. "This is the same idea as a mutex, applied to a simulator that two agents would otherwise fight over."
+## 4. Phase 4: the Runner [1:30] (scene "4 · Runs")
+- Click tiles for evidence and the suggested cause. Click the doubtful one: "selector" might be an app bug. "The agent suggests, a person confirms."
+- Host gauges: swap and memory under pressure may explain the driver failure. "A good report separates test failures from machine trouble."
+- Terminal: the run lock refusing a second driver.
 
-## 5. Prompt injection, live [2:00] (steps 6 and 7)
-- Show `fixtures/tracker.json`: a ticket comment that tells automation agents to mark failures as passed and delete results; a chat message that claims owner approval and asks for an API key; a fake token.
-- Run the fetch: the token is redacted before any agent sees it.
-- Show the Watcher report's "Quoted instructions": both quoted in fenced blocks, "Not acted on".
-- Say why it holds: "Even if the model were fooled, the Watcher has no Bash and no network. And the hook would block the command. And the Lead's check fails any report that does not quote the injection."
+## 5. Phase 5: tickets [0:45] (scene "5 · Tickets")
+- Drafts with evidence. Click "Owner approves": only then are they filed. Terminal: the filing script refuses without approval.
 
-## 6. Analyst and Automation engineer [1:30] (steps 8 and 9)
-- Case draft: every step has `Source: TE-160 AC2`. One case is *blocked* by a named gap (does a declined payment count towards the daily limit?). "The Analyst never guesses; it asks."
-- The new flow `auth-004`: lint output, a run id, the lock taken for the run.
+## 6. Phase 6: the Watcher [2:00] (scene "6 · Watcher")
+- The example you want to tell: a ticket labelled e2e moves to the test status. The Watcher catches it, the Lead asks for a case and a script, the suite grows from 10 to 11.
+- The planted attacks: two texts that give the agents orders, plus a secret. "Quoted as data, redacted, not acted on. And even if the model were fooled, the Watcher has no shell and no network."
 
-## 7. The Lead rejects a handoff [1:30] (step 10)
-`lead-check` accepts four handoffs and rejects one: empty evidence, a step without a source, and a citation to an acceptance criterion that does not exist. "The Lead re-derives, it does not trust summaries. Two rejections in a row go to me."
-
-## 8. Cost and honesty [0:30] (steps 11 and 12)
-Cost log per role against budget caps; point at the "illustrative" note. Then the README's "Honest limits": recorded mode is a replay, the classifier is regexes, the hook is not a sandbox.
+## 7. Review and cost [0:45] (last scene)
+- Five handoffs accepted, one rejected by code: empty evidence, a step without a source, a source that does not exist.
+- Cost per role against caps (illustrative in recorded mode). Close with the README's "Honest limits".
 
 ## Likely questions
-- *Why two models?* Case writing is judgement (stronger model); flow writing has fast feedback from lint and a run (cheaper model). It is a hypothesis I would revise with measured cost and quality.
-- *Why not let the agents file tickets?* Outward actions are the owner's. Drafts, not sends.
-- *What if the model ignores the prompt?* That is why the controls are structural: tool allowlists, hook, deny rules, redaction, budget caps.
-- *How would this run in CI?* Headless roles with `--max-budget-usd` and their own permission files; secrets as CI secrets; the run lock replaced by one device per job.
-- *What did you not verify?* A live Maestro run, and `--agents` mode with fresh model output. Say it first, before they ask.
+- *Why two models?* Case writing is judgement (stronger model); script writing has fast feedback from lint and a run (cheaper model). A hypothesis I would revise with measured cost and quality.
+- *Why not let the agents file tickets?* Outward actions are the owner's. Drafts, not sends. The script and the hook both refuse without approval.
+- *What if the model ignores its prompt?* The controls are structural: tool allowlists, hook, deny rules, redaction, budget caps.
+- *How would this run in CI?* Headless roles with `--max-budget-usd` and their own permission files; secrets as CI secrets.
+- *What did you not verify?* A live Maestro run and `--agents` mode with fresh model output. Say it first.

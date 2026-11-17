@@ -1,0 +1,54 @@
+{
+  "startedAt": "2025-03-11T15:00:00Z",
+  "platform": "ios",
+  "host": {
+    "peakCpuPct": 64,
+    "minFreeMemMb": 3100,
+    "swapGb": 0.4,
+    "diskFreeGb": 90
+  },
+  "flows": {
+    "auth-001": {
+      "ok": true,
+      "durationMs": 41200
+    },
+    "auth-002": {
+      "ok": true,
+      "durationMs": 36500
+    },
+    "auth-003": {
+      "ok": true,
+      "durationMs": 52800
+    },
+    "invest-001": {
+      "ok": true,
+      "durationMs": 63400
+    },
+    "invest-002": {
+      "ok": true,
+      "durationMs": 45100
+    },
+    "portfolio-001": {
+      "ok": false,
+      "durationMs": 71900,
+      "error": "Assertion is false: id: portfolio-total-value-text, text: \"USD 250.00\" is visible (found \"USD 0.00\")"
+    },
+    "property-001": {
+      "ok": true,
+      "durationMs": 38700
+    },
+    "wallet-001": {
+      "ok": true,
+      "durationMs": 47300
+    },
+    "wallet-002": {
+      "ok": true,
+      "durationMs": 44000
+    },
+    "wallet-003": {
+      "ok": false,
+      "durationMs": 46200,
+      "error": "Assertion is false: id: wallet-balance-text, text: \"USD 100.00\" is visible (found \"USD 200.00\")"
+    }
+  }
+}

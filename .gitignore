@@ -7,8 +7,16 @@ docs/qa-team/runs/*-nightly.md
 docs/qa-team/lead/reviews/*
 docs/qa-team/lead/tasks/20*.md
 docs/cases/drafts/
-e2e/flows/auth/auth-004-*.yaml
+e2e/flows/*/*.yaml
 node_modules/
 .DS_Store
 .expo/
 .privacy-terms.local
+!e2e/flows/.gitkeep
+docs/cases/*
+!docs/cases/.gitkeep
+docs/qa-team/lead/intake.json
+docs/qa-team/lead/strategy.*
+docs/qa-team/lead/tickets-to-file.json
+docs/qa-team/testid-requests.md
+e2e/test-plan.json

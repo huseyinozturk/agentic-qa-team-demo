@@ -4,7 +4,7 @@
     "allow": [
       "Read(./**)", "Grep(./**)", "Glob(./**)",
       "Write(docs/qa-team/runs/**)",
-      "Bash(node runner/src/cli.ts run:*)", "Bash(node runner/src/cli.ts report:*)",
+      "Bash(node runner/src/cli.ts plan:*)", "Bash(node runner/src/cli.ts run:*)", "Bash(node runner/src/cli.ts report:*)",
       "Bash(node runner/src/cli.ts list:*)", "Bash(node runner/src/cli.ts lock status)",
       "Bash(df:*)", "Bash(ps:*)"
     ],

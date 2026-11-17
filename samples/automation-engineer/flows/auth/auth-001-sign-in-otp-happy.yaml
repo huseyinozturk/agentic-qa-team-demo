@@ -1,0 +1,12 @@
+# case: auth-001
+# tickets: [TE-101]
+appId: com.example.tokenestate
+name: Sign in with e-mail OTP
+tags:
+  - smoke
+---
+- runFlow: ../../subflows/sign-in.yaml
+- tapOn:
+    id: "tab-wallet"
+- assertVisible:
+    id: "wallet-balance-text"

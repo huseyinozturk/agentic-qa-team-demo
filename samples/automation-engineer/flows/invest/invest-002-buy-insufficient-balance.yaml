@@ -1,0 +1,19 @@
+# case: invest-002
+# tickets: [TE-131]
+appId: com.example.tokenestate
+name: Buying without balance is refused
+tags:
+  - critical
+---
+- runFlow: ../../subflows/sign-in.yaml
+- runFlow: ../../subflows/open-harbour.yaml
+- tapOn:
+    id: "buy-tokens-button"
+- tapOn:
+    id: "token-quantity-input"
+- inputText: "5"
+- tapOn:
+    id: "buy-confirm-button"
+- assertVisible:
+    id: "buy-error-text"
+    text: "Insufficient balance"

@@ -1,0 +1,17 @@
+# case: auth-004
+# tickets: [TE-150]
+appId: com.example.tokenestate
+name: Sign out returns to the sign-in screen
+tags:
+  - regression
+---
+- runFlow: ../../subflows/sign-in.yaml
+- tapOn:
+    id: "tab-profile"
+- assertVisible:
+    id: "profile-email-text"
+    text: "demo@example.test"
+- tapOn:
+    id: "sign-out-button"
+- assertVisible:
+    id: "sign-in-title"

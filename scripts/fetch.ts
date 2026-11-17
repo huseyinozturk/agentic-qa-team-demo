@@ -4,7 +4,7 @@
 //   node scripts/fetch.ts [--since ISO] [--until ISO] [--out file]
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, loadFlows, arg } from '../runner/src/lib.ts';
+import { ROOT, loadFlows, arg, walk } from '../runner/src/lib.ts';
 import { redact, looksLikeInstruction } from './redact.ts';
 
 const args = process.argv.slice(2);
@@ -28,11 +28,11 @@ const messages = chat.channels.map((c: any) => ({ channel: c.name, messages: c.m
 
 // ticket -> flows (by header) and case documents (by grep)
 const casesByTicket: Record<string, { flows: string[]; docs: string[] }> = {};
-const caseLines = fs.readFileSync(path.join(ROOT, 'docs/cases/index.md'), 'utf8').split('\n');
+const caseFiles = walk(path.join(ROOT, 'docs/cases')).filter((p) => p.endsWith('.md')).map((p) => ({ rel: path.relative(ROOT, p), lines: fs.readFileSync(p, 'utf8').split('\n') }));
 const flows = loadFlows();
 for (const t of tracker.tickets) {
   const f = flows.filter((x) => x.tickets.includes(t.key)).map((x) => `${x.caseId} (${x.file})`);
-  const d = caseLines.map((l, i) => (l.includes(t.key) ? `docs/cases/index.md:${i + 1}` : '')).filter(Boolean);
+  const d = caseFiles.flatMap((cf) => cf.lines.map((l, i) => (l.includes(t.key) && /^type:/.test(l) ? `${cf.rel}:${i + 1}` : '')).filter(Boolean));
   if (f.length || d.length) casesByTicket[t.key] = { flows: f, docs: d };
 }
 

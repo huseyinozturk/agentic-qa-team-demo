@@ -1,0 +1,17 @@
+# case: wallet-001
+# tickets: [TE-110]
+appId: com.example.tokenestate
+name: Top up the wallet
+tags:
+  - smoke
+---
+- runFlow: ../../subflows/sign-in.yaml
+- runFlow:
+    file: ../../subflows/top-up.yaml
+    env:
+      AMOUNT: "100"
+- assertVisible:
+    id: "topup-success-text"
+- assertVisible:
+    id: "wallet-balance-text"
+    text: "USD 100.00"

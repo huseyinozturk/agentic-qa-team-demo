@@ -1,0 +1,29 @@
+{
+  "startedAt": "2025-03-14T07:00:00Z",
+  "platform": "ios",
+  "host": {
+    "peakCpuPct": 96,
+    "minFreeMemMb": 610,
+    "swapGb": 6.2,
+    "diskFreeGb": 86
+  },
+  "flows": {
+    "auth-001": {
+      "ok": true,
+      "durationMs": 41200
+    },
+    "wallet-001": {
+      "ok": true,
+      "durationMs": 47300
+    },
+    "property-001": {
+      "ok": true,
+      "durationMs": 38700
+    },
+    "invest-001": {
+      "ok": false,
+      "durationMs": 63400,
+      "error": "Element not found: Id matching regex: buy-confirm-button"
+    }
+  }
+}

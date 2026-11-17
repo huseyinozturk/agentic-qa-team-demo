@@ -4,6 +4,12 @@ Five Claude agents (QA Lead, Watcher, Analyst, Automation engineer, Runner) run 
 
 Everything is fake: the app, the backend, the tickets, the chat. It needs no company access and no device to demo.
 
+## Live demo (no install)
+
+**Animated walkthrough:** `https://<username>.github.io/<repo>/` (GitHub Pages: Settings → Pages → Source: branch `main`, folder `/docs`). It plays the six phases of a team starting on a new project, from the real output of the demo. Replace `<username>` and `<repo>` after publishing.
+
+To browse the raw results without running anything: [docs/example-output/](docs/example-output/).
+
 ## 5-minute quickstart
 
 Prerequisites: **Node 22.18 or newer** (the TypeScript scripts run directly, no build) and `bash`. Nothing to install for the demo itself.
@@ -13,19 +19,18 @@ git clone https://github.com/<your-user>/agentic-qa-team-demo && cd agentic-qa-t
 ./scripts/demo.sh
 ```
 
-That runs the whole story in *recorded* mode in about 10 seconds, offline:
+That plays one story in *recorded* mode (about 15 seconds, offline): **the team meets a project for the first time.**
 
-1. checks the team definition, the safety hook and the unit tests;
-2. reproduces the backend's failure modes (OTP delayed, payment declined, duplicate webhook);
-3. lints the Maestro flows, and shows a bad flow being rejected;
-4. runs two nightly regressions and writes the **nightly report** (failure classes + evidence);
-5. shows the run lock refusing a second driver;
-6. fetches mock tracker and chat data, **redacts a planted fake token**;
-7. shows the **Watcher's "what changed" report**, which quotes two planted prompt injections as data and does not act on them;
-8. shows the **Analyst's case draft** with a named source per step;
-9. adds a **new flow** from the Automation engineer that passes lint and a run;
-10. shows the **Lead's review rejecting a handoff** that has no evidence, derived by code;
-11. prints the **cost log** and runs the privacy check.
+1. **QA Lead** collects the documents and tickets, groups them and decides which test type (unit, API, end-to-end) fits what, and writes the test plan.
+2. **Analyst** writes cases per type. Every step and expectation names a source. Documents have a ranking; where two disagree, a clarification question is drafted for the people who own them. It also proposes the smoke, critical and regression suites (the owner approves the first two).
+3. **Automation engineer** turns the ready end-to-end cases into Maestro scripts, checks that the app has the testIDs the cases need, and notes what is missing.
+4. **Runner** executes the plan (smoke on every build, regression nightly) and reports per test *and* per host resource (CPU, memory, swap, disk, duration).
+5. **QA Lead** reads the report and drafts tickets for the findings. Filing needs the owner's approval; the script refuses without it.
+6. **Watcher** follows the tracker and chat in the background. A ticket labelled `e2e` moves to the test status, so the Lead has a case and a script made and the suite grows. Two planted prompt injections and a fake token show the safety model.
+
+At the end the Lead reviews every handoff by re-deriving the evidence (one is rejected), the cost log is printed and the privacy check runs.
+
+**Prefer pictures to terminal text?** The last step builds a clickable visual walkthrough from the real outputs: `open docs/visual/index.html` (or `OPEN=1 ./scripts/demo.sh`). It opens with an animated diagram of the six phases (who talks to whom), then one scene per phase: plan, cases and document conflicts, scripts and testID gaps, runs and host metrics (click a failing test for its evidence), tickets with the owner-approval gate, the Watcher with the planted attacks, and finally review and cost. Arrow keys navigate.
 
 Useful options: `./scripts/demo.sh --pause` (wait for Enter between steps, for presenting) and `./scripts/demo.sh --agents` (see below). The presenter script is in [docs/demo-script.md](docs/demo-script.md). One finished run is committed in [docs/example-output/](docs/example-output/).
 
@@ -33,34 +38,28 @@ Useful options: `./scripts/demo.sh --pause` (wait for Enter between steps, for p
 
 ```mermaid
 flowchart LR
-  subgraph outside[Mock outside world]
-    T[(tracker.json)]
-    C[(chat.json)]
+  SRC[(Documents<br/>+ tickets)] -->|1 collect, group| L
+  L[QA Lead<br/>Opus] -->|2 strategy| A[Analyst<br/>Opus]
+  A -->|cases + questions| L
+  A -.->|clarifications| O((Owner approves<br/>every outward action))
+  L -->|3 ready cases| E[Automation engineer<br/>Sonnet]
+  E -->|scripts + testID gaps| L
+  L -->|4 test plan| R[Runner<br/>Sonnet]
+  R -->|report: tests + host resources| L
+  E --> DEV
+  R --> DEV
+  subgraph dev[One device: run lock]
+    DEV[runner CLI] --> M[Maestro scripts] --> APP[TokenEstate app] --> BE[mock backend<br/>failure modes]
   end
-  F[fetch.ts<br/>holds the only access<br/>redacts secrets]
-  T --> F
-  C --> F
-  F -->|redacted JSON| W[Watcher<br/>Sonnet, read-only]
-  W -->|watch report| L
-  L[QA Lead<br/>Opus] -->|task files| A[Analyst<br/>Opus]
-  L -->|task files| E[Automation engineer<br/>Sonnet]
-  L -->|task files| R[Runner<br/>Sonnet]
-  A -->|case drafts| L
-  E -->|flows + lint + run id| L
-  R -->|nightly report| L
-  E --> RUN
-  R --> RUN
-  subgraph dev[One device]
-    RUN[runner CLI + run lock] --> M[Maestro flows]
-    M --> APP[TokenEstate app]
-    APP --> BE[mock backend<br/>failure modes]
-  end
-  RUN -->|runs.jsonl| R
-  L -->|drafts only| O((Owner approves<br/>every outward action))
-  H{{PreToolUse hook<br/>deny rules<br/>budget caps}} -.guards.- W
-  H -.guards.- A
+  L -.->|5 draft tickets| O
+  O -->|files| TR[(Tracker + chat)]
+  TR -->|6 daily news| F[fetch.ts<br/>redacts secrets]
+  F --> W[Watcher<br/>Sonnet, read-only]
+  W -->|what changed| L
+  H{{hook, deny rules,<br/>budget caps}} -.guards.- A
   H -.guards.- E
   H -.guards.- R
+  H -.guards.- W
   H -.guards.- L
 ```
 
@@ -70,12 +69,13 @@ flowchart LR
 |---|---|
 | `app/` | Expo (React Native) app, every interactive element has a kebab-case `testID` |
 | `mock-backend/` | Node mock backend with switchable failure modes, unit-tested |
-| `e2e/` | 10 Maestro flows with headers (case id, tickets, tags), shared subflows, suites (`smoke`, `regression`), owner-only smoke allowlist |
+| `e2e/` | Maestro flow headers (case id, tickets, tags), shared subflows, suites (`smoke`, `critical`, `regression`), owner-approved suite allowlist. Flows start empty: the Automation engineer step creates them from `samples/` |
 | `runner/` | TypeScript runner: `lint`, `list`, `run`, `report`, `lock`; writes `results/runs.jsonl` with failure class `app/selector/env/test/driver`; recorded-run mode |
 | `.claude/agents/` | The five agents (model, tool allowlist, trigger, budget) |
 | `.claude/settings.json`, `.claude/hooks/` | Deny rules and the `PreToolUse` guard |
 | `docs/qa-team/` | Roster, per-role permission files, handoffs, reports, run lock, cost log |
-| `fixtures/`, `scripts/fetch.ts` | Mock Jira/Slack data and the redacting fetch step |
+| `fixtures/`, `scripts/fetch.ts` | Fake project documents (product requirements, API spec, design notes), mock tracker and chat data, and the redacting fetch step |
+| `docs/visual/` | The animated, clickable walkthrough built by `scripts/build-visual.ts` |
 | `samples/` | Recorded agent outputs used by the offline demo |
 | `docs/design.md`, `docs/safety.md`, `docs/seeded-bugs.md`, `docs/demo-script.md` | Design, safety model, the two seeded bugs, interview walkthrough |
 
@@ -101,7 +101,7 @@ Agents draft, the owner decides and sends. Layers: narrow tool allowlists (the W
 - The injection defences are layered, not proof. The strongest ones are structural (no tools to act with). Prompt wording and the heuristic flagging in `fetch.ts` are weaker. A determined attacker with write access to a tool an agent legitimately has could still do damage inside that tool's scope.
 - The hook uses pattern matching on commands, so it is conservative: it can block harmless commands that merely contain a blocked word, and it is not a sandbox. Use OS-level isolation for anything real.
 - Costs in the log are placeholders unless the mode is `live`; token prices in `docs/qa-team/prices.json` are placeholders too.
-- One mock app, one platform in the recordings, ten flows: it is a teaching demo, not a benchmark.
+- One mock app, one platform in the recordings, a few dozen cases and eleven flows: it is a teaching demo, not a benchmark.
 
 ## Privacy
 

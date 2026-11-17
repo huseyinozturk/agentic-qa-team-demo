@@ -1,0 +1,16 @@
+# case: wallet-003
+# tickets: [TE-112]
+# backend-mode: duplicate-webhook
+appId: com.example.tokenestate
+name: Duplicate payment webhook credits once
+tags:
+  - critical
+---
+- runFlow: ../../subflows/sign-in.yaml
+- runFlow:
+    file: ../../subflows/top-up.yaml
+    env:
+      AMOUNT: "100"
+- assertVisible:
+    id: "wallet-balance-text"
+    text: "USD 100.00"

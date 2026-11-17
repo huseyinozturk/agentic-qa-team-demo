@@ -1,0 +1,18 @@
+# case: wallet-002
+# tickets: [TE-111]
+# backend-mode: payment-declined
+appId: com.example.tokenestate
+name: Declined payment shows an error
+tags:
+  - regression
+---
+- runFlow: ../../subflows/sign-in.yaml
+- runFlow:
+    file: ../../subflows/top-up.yaml
+    env:
+      AMOUNT: "100"
+- assertVisible:
+    id: "topup-error-text"
+- assertVisible:
+    id: "wallet-balance-text"
+    text: "USD 0.00"

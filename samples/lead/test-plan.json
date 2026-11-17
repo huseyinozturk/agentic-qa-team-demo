@@ -1,0 +1,8 @@
+{
+  "_note": "The test strategy as the runner executes it. Written by the QA Lead (strategy), executed by the Runner. Suites come from tags; the owner approves smoke and critical membership.",
+  "plans": [
+    { "name": "smoke-on-build", "suite": "smoke", "env": "staging", "trigger": "every new build" },
+    { "name": "nightly-regression", "suite": "regression", "env": "staging", "trigger": "nightly 22:00" },
+    { "name": "pre-release-critical", "suite": "critical", "env": "staging", "trigger": "before a release" }
+  ]
+}

@@ -1,6 +1,12 @@
 {
   "startedAt": "2025-03-13T22:00:00Z",
   "platform": "ios",
+  "host": {
+    "peakCpuPct": 96,
+    "minFreeMemMb": 610,
+    "swapGb": 6.2,
+    "diskFreeGb": 86
+  },
   "flows": {
     "auth-001": {
       "ok": true,

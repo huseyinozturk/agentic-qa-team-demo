@@ -5,13 +5,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { ROOT, RESULTS_DIR, E2E_DIR, loadConfig, loadFlows, suiteFlows, appendRun, readJson, arg, type Flow, type RunRecord } from './lib.ts';
+import { ROOT, RESULTS_DIR, E2E_DIR, loadConfig, loadFlows, suiteFlows, appendRun, readJson, arg, type Flow, type RunRecord, type HostMetrics } from './lib.ts';
 import { classify, type Hints } from './classify.ts';
 import { acquire, release } from './lock.ts';
 
 type Recording = {
   startedAt: string;
   platform: string;
+  host?: HostMetrics;
   flows: Record<string, { ok: boolean; durationMs: number; error?: string; hints?: Hints }>;
 };
 
@@ -23,6 +24,8 @@ export async function run(args: string[]): Promise<number> {
   const mode = (arg(args, 'mode') ?? 'recorded') as 'recorded' | 'live';
   const role = arg(args, 'role') ?? 'runner';
   const platform = arg(args, 'platform') ?? 'ios';
+  const env = arg(args, 'env') ?? 'local';
+  const label = arg(args, 'label') ?? suite ?? 'adhoc';
   if (!suite && !flowName) { console.error('usage: run --suite <name> | --flow <case-id> [--mode recorded|live] [--recording file] [--role name]'); return 2; }
 
   const flows: Flow[] = flowName ? loadFlows().filter((f) => f.caseId === flowName) : suiteFlows(suite!);
@@ -39,7 +42,8 @@ export async function run(args: string[]): Promise<number> {
       rec = readJson<Recording>(path.resolve(recFile));
     }
     const startedAt = rec?.startedAt ?? new Date().toISOString();
-    const batchId = `${stamp(startedAt)}_${suite ?? 'adhoc'}_${platform}`;
+    const batchId = `${stamp(startedAt)}_${label}_${platform}`;
+    console.log(`environment: ${env}, platform: ${platform}, ${flows.length} flows`);
     let failed = 0;
 
     for (const f of flows) {
@@ -60,8 +64,8 @@ export async function run(args: string[]): Promise<number> {
       const logPath = path.relative(ROOT, path.join(dir, 'maestro.log'));
       fs.writeFileSync(path.join(ROOT, logPath), `flow: ${f.file}\nbackend-mode: ${f.backendMode}\nresult: ${ok ? 'PASSED' : 'FAILED'}\n${error ? `error: ${error}\n` : ''}`);
       const record: RunRecord = {
-        runId, batchId, startedAt, suite: suite ?? 'adhoc', caseId: f.caseId, flow: path.basename(f.file), platform,
-        ok, durationMs, failureClass, error, logPath, backendMode: f.backendMode, mode,
+        runId, batchId, startedAt, suite: label, caseId: f.caseId, flow: path.basename(f.file), platform,
+        ok, durationMs, failureClass, error, logPath, backendMode: f.backendMode, mode, env, host: rec?.host,
       };
       appendRun(record);
       if (!ok) failed++;

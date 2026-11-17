@@ -1,0 +1,14 @@
+# case: property-001
+# tickets: [TE-120]
+appId: com.example.tokenestate
+name: Browse a property and open its detail
+tags:
+  - smoke
+---
+- runFlow: ../../subflows/sign-in.yaml
+- runFlow: ../../subflows/open-harbour.yaml
+- assertVisible:
+    id: "property-name-text"
+    text: "Harbour View Apartments"
+- assertVisible:
+    id: "property-price-text"

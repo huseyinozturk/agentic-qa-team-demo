@@ -6,6 +6,8 @@ import { lint } from './lint.ts';
 import { run } from './run.ts';
 import { nightlyReport, latestTable } from './report.ts';
 import { acquire, release, lockStatus } from './lock.ts';
+import { testIdReport } from './testids.ts';
+import { readJson } from './lib.ts';
 
 const [cmd, ...args] = process.argv.slice(2);
 
@@ -32,6 +34,26 @@ switch (cmd) {
       console.log(text);
       console.log(`written: ${path.relative(ROOT, out)}`);
     } else console.log(latestTable(arg(args, 'suite')));
+    break;
+  }
+  case 'testids': {
+    const r = testIdReport();
+    fs.writeFileSync(path.join(ROOT, 'docs/qa-team/testid-requests.md'), r.text);
+    console.log(r.text);
+    break;
+  }
+  case 'plan': {
+    type Plan = { name: string; suite: string; env: string; trigger: string };
+    const plans = readJson<{ plans: Plan[] }>(path.join(ROOT, 'e2e/test-plan.json')).plans;
+    const [sub, name] = args;
+    if (sub === 'run') {
+      const p = plans.find((x) => x.name === name);
+      if (!p) { console.error('unknown plan ' + name); process.exit(2); }
+      console.log('plan ' + p.name + ': suite ' + p.suite + ' on ' + p.env + ' (trigger: ' + p.trigger + ')');
+      process.exit(await run(['--suite', p.suite, '--env', p.env, ...args.slice(2)]));
+    }
+    console.log('plan                  suite       env       trigger');
+    for (const p of plans) console.log(p.name.padEnd(21) + ' ' + p.suite.padEnd(11) + ' ' + p.env.padEnd(9) + ' ' + p.trigger);
     break;
   }
   case 'lock': {

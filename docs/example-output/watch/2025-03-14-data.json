@@ -5,43 +5,12 @@
   },
   "tickets": [
     {
-      "key": "TE-102",
-      "type": "Story",
-      "summary": "Handle late OTP delivery",
-      "status": "In Review",
-      "labels": [
-        "e2e"
-      ],
-      "updatedAt": "2025-03-13T15:20:00Z",
-      "description": "The code can arrive up to 30 seconds late. The app shows a banner when it arrives.",
-      "acceptanceCriteria": [
-        "AC1: a banner shows when the code is delivered",
-        "AC2: the user can request a new code at any time",
-        "AC3: a code is valid for 10 minutes after delivery"
-      ],
-      "changes": [
-        {
-          "at": "2025-03-13T15:20:00Z",
-          "field": "status",
-          "from": "In Progress",
-          "to": "In Review"
-        },
-        {
-          "at": "2025-03-13T15:05:00Z",
-          "field": "acceptanceCriteria",
-          "from": "(2 criteria)",
-          "to": "(3 criteria: AC3 added)"
-        }
-      ],
-      "comments": []
-    },
-    {
       "key": "TE-112",
+      "area": "wallet",
       "type": "Bug",
       "summary": "Duplicate payment webhook credits the wallet twice",
       "status": "In Progress",
       "labels": [
-        "e2e",
         "payments"
       ],
       "updatedAt": "2025-03-13T11:40:00Z",
@@ -68,12 +37,11 @@
     },
     {
       "key": "TE-130",
+      "area": "invest",
       "type": "Story",
       "summary": "Buy tokens with wallet balance",
       "status": "In Review",
-      "labels": [
-        "e2e"
-      ],
+      "labels": [],
       "updatedAt": "2025-03-13T16:10:00Z",
       "description": "A signed-in user buys tokens of a property with the wallet balance.",
       "acceptanceCriteria": [
@@ -100,12 +68,11 @@
     },
     {
       "key": "TE-140",
+      "area": "portfolio",
       "type": "Bug",
       "summary": "Portfolio shows stale value after a purchase",
       "status": "Open",
-      "labels": [
-        "e2e"
-      ],
+      "labels": [],
       "updatedAt": "2025-03-13T10:00:00Z",
       "description": "After buying tokens the portfolio screen keeps showing the old total until the app is restarted.",
       "acceptanceCriteria": [
@@ -123,10 +90,13 @@
     },
     {
       "key": "TE-150",
+      "area": "profile",
       "type": "Story",
       "summary": "Sign out from the profile screen",
-      "status": "In Review",
-      "labels": [],
+      "status": "Ready for Test",
+      "labels": [
+        "e2e"
+      ],
       "updatedAt": "2025-03-13T17:00:00Z",
       "description": "A signed-in user can sign out from the profile screen.",
       "acceptanceCriteria": [
@@ -136,16 +106,23 @@
       ],
       "changes": [
         {
+          "at": "2025-03-13T16:55:00Z",
+          "field": "labels",
+          "from": "(none)",
+          "to": "e2e"
+        },
+        {
           "at": "2025-03-13T17:00:00Z",
           "field": "status",
           "from": "In Progress",
-          "to": "In Review"
+          "to": "Ready for Test"
         }
       ],
       "comments": []
     },
     {
       "key": "TE-160",
+      "area": "wallet",
       "type": "Story",
       "summary": "Daily wallet top-up limit",
       "status": "To Do",
@@ -153,8 +130,8 @@
       "updatedAt": "2025-03-13T14:00:00Z",
       "description": "A user can top up at most 5000 USD per day, to limit fraud exposure.",
       "acceptanceCriteria": [
-        "AC1: a top-up that keeps the day's total at or below 5000 USD succeeds",
-        "AC2: a top-up that would pass 5000 USD is refused with the message \"Daily limit reached\"",
+        "AC1: a top-up that keeps the day's total at or below the limit succeeds",
+        "AC2: a top-up that would pass the limit is refused with the message \"Daily limit reached\"",
         "AC3: a refused top-up does not change the balance"
       ],
       "changes": [
@@ -176,6 +153,7 @@
     },
     {
       "key": "TE-170",
+      "area": "infra",
       "type": "Task",
       "summary": "Raise API rate limit for the staging backend",
       "status": "Done",
@@ -238,16 +216,8 @@
         "auth-002 (e2e/flows/auth/auth-002-sign-in-invalid-otp.yaml)"
       ],
       "docs": [
-        "docs/cases/index.md:5",
-        "docs/cases/index.md:6"
-      ]
-    },
-    "TE-111": {
-      "flows": [
-        "wallet-002 (e2e/flows/wallet/wallet-002-topup-declined.yaml)"
-      ],
-      "docs": [
-        "docs/cases/index.md:9"
+        "docs/cases/auth.md:4",
+        "docs/cases/auth.md:11"
       ]
     },
     "TE-102": {
@@ -255,7 +225,24 @@
         "auth-003 (e2e/flows/auth/auth-003-otp-delayed-delivery.yaml)"
       ],
       "docs": [
-        "docs/cases/index.md:7"
+        "docs/cases/api-unit.md:10",
+        "docs/cases/auth.md:17"
+      ]
+    },
+    "TE-110": {
+      "flows": [
+        "wallet-001 (e2e/flows/wallet/wallet-001-topup-happy.yaml)"
+      ],
+      "docs": [
+        "docs/cases/wallet.md:4"
+      ]
+    },
+    "TE-111": {
+      "flows": [
+        "wallet-002 (e2e/flows/wallet/wallet-002-topup-declined.yaml)"
+      ],
+      "docs": [
+        "docs/cases/wallet.md:10"
       ]
     },
     "TE-112": {
@@ -263,7 +250,28 @@
         "wallet-003 (e2e/flows/wallet/wallet-003-topup-duplicate-webhook.yaml)"
       ],
       "docs": [
-        "docs/cases/index.md:10"
+        "docs/cases/api-unit.md:4",
+        "docs/cases/wallet.md:17"
+      ]
+    },
+    "TE-113": {
+      "flows": [],
+      "docs": [
+        "docs/cases/api-unit.md:22"
+      ]
+    },
+    "TE-114": {
+      "flows": [],
+      "docs": [
+        "docs/cases/api-unit.md:28"
+      ]
+    },
+    "TE-120": {
+      "flows": [
+        "property-001 (e2e/flows/property/property-001-browse-detail.yaml)"
+      ],
+      "docs": [
+        "docs/cases/property-invest-portfolio.md:4"
       ]
     },
     "TE-130": {
@@ -271,7 +279,15 @@
         "invest-001 (e2e/flows/invest/invest-001-buy-tokens.yaml)"
       ],
       "docs": [
-        "docs/cases/index.md:12"
+        "docs/cases/property-invest-portfolio.md:10"
+      ]
+    },
+    "TE-131": {
+      "flows": [
+        "invest-002 (e2e/flows/invest/invest-002-buy-insufficient-balance.yaml)"
+      ],
+      "docs": [
+        "docs/cases/property-invest-portfolio.md:17"
       ]
     },
     "TE-140": {
@@ -279,7 +295,16 @@
         "portfolio-001 (e2e/flows/portfolio/portfolio-001-after-buy.yaml)"
       ],
       "docs": [
-        "docs/cases/index.md:14"
+        "docs/cases/property-invest-portfolio.md:23"
+      ]
+    },
+    "TE-160": {
+      "flows": [],
+      "docs": [
+        "docs/cases/api-unit.md:16",
+        "docs/cases/wallet.md:23",
+        "docs/cases/wallet.md:29",
+        "docs/cases/wallet.md:36"
       ]
     }
   },

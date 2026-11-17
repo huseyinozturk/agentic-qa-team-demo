@@ -1,0 +1,64 @@
+{
+  "filed": [
+    {
+      "id": "D1",
+      "action": "comment",
+      "ticket": "TE-112",
+      "title": "Evidence: still reproducible in last night's run",
+      "body": "wallet-003 failed again last night: balance 200.00 instead of 100.00 after a repeated payment confirmation. Same failure the night before.",
+      "evidence": "nightly report 2025-03-14, wallet-003",
+      "filedAs": "comment on TE-112",
+      "approvedBy": "owner"
+    },
+    {
+      "id": "D2",
+      "action": "comment",
+      "ticket": "TE-140",
+      "title": "Evidence: still reproducible in last night's run",
+      "body": "portfolio-001 failed again: the portfolio total shows 0.00 after a purchase of 10 tokens (expected 250.00).",
+      "evidence": "nightly report 2025-03-14, portfolio-001",
+      "filedAs": "comment on TE-140",
+      "approvedBy": "owner"
+    },
+    {
+      "id": "D3",
+      "action": "create",
+      "type": "Bug",
+      "title": "Confirm-purchase button not found after entering a quantity",
+      "body": "invest-001 (smoke) fails on the new build: element 'buy-confirm-button' is not found. The runner suggested class 'selector', but the button may be hidden by the keyboard, which would be an app bug. Please check on a device.",
+      "evidence": "nightly report 2025-03-14, invest-001; smoke run on the new build",
+      "filedAs": "TE-201",
+      "approvedBy": "owner"
+    },
+    {
+      "id": "D4",
+      "action": "create",
+      "type": "Task",
+      "title": "One-time code delivery slower than 25 s on staging",
+      "body": "auth-003 timed out waiting for the 'Code delivered' banner. The mail provider was reported slow in chat. Environment issue, not an app bug.",
+      "evidence": "nightly report 2025-03-14, auth-003",
+      "filedAs": "TE-202",
+      "approvedBy": "owner"
+    },
+    {
+      "id": "D5",
+      "action": "create",
+      "type": "Task",
+      "title": "Test host under memory pressure",
+      "body": "Last night: 6.2 GB swap in use, minimum free memory 610 MB, peak CPU 96 percent. The simulator driver failed in property-001. Please look at the host before adding more flows.",
+      "evidence": "nightly report 2025-03-14, system section",
+      "filedAs": "TE-203",
+      "approvedBy": "owner"
+    },
+    {
+      "id": "D6",
+      "action": "create",
+      "type": "Task",
+      "title": "Add a testID for the daily limit message",
+      "body": "wallet-005 cannot be automated: the app needs a testID 'topup-limit-message-text' on the daily limit message (TE-160).",
+      "evidence": "docs/qa-team/testid-requests.md",
+      "filedAs": "TE-204",
+      "approvedBy": "owner"
+    }
+  ]
+}

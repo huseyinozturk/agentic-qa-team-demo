@@ -1,0 +1,26 @@
+# case: auth-003
+# tickets: [TE-102]
+# backend-mode: otp-delay
+appId: com.example.tokenestate
+name: Sign in when the OTP arrives late
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: "email-input"
+- inputText: "demo@example.test"
+- tapOn:
+    id: "send-otp-button"
+- extendedWaitUntil:
+    visible:
+      id: "otp-delivered-banner"
+    timeout: 25000
+- tapOn:
+    id: "otp-input"
+- inputText: "123456"
+- tapOn:
+    id: "verify-otp-button"
+- assertVisible:
+    id: "tab-wallet"
