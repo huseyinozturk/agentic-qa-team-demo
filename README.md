@@ -6,6 +6,8 @@ Everything is fake: the app, the backend, the tickets, the chat. It needs no com
 
 ## Live demo (no install)
 
+[![Animated walkthrough: an agentic QA team starts on a new project](docs/img/walkthrough.png)](https://huseyinozturk.github.io/agentic-qa-team-demo/)
+
 **Animated walkthrough:** [huseyinozturk.github.io/agentic-qa-team-demo](https://huseyinozturk.github.io/agentic-qa-team-demo/). It plays the six phases of a team starting on a new project, from the real output of the demo.
 
 To browse the raw results without running anything: [docs/example-output/](docs/example-output/).

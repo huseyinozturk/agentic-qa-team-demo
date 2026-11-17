@@ -48,8 +48,8 @@ mail_hits=$(files | xargs grep -I -n -o -E "[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-
 [ -n "$mail_hits" ] && { echo "$mail_hits"; report "e-mail address outside example.test"; }
 
 # 4. no screenshots or real run data
-shots=$(files | grep -i -E '\.(png|jpe?g|gif|webp|heic)$' | head -3)
-[ -n "$shots" ] && { echo "$shots"; report "image files are not allowed (no screenshots)"; }
+shots=$(files | grep -i -E '\.(png|jpe?g|gif|webp|heic)$' | grep -v -x 'docs/img/walkthrough.png' | head -3)
+[ -n "$shots" ] && { echo "$shots"; report "image files are not allowed (only docs/img/walkthrough.png, a capture of the mock demo, is allowed)"; }
 
 if [ "$fail" -eq 0 ]; then echo "privacy-check: OK ($(files | wc -l | tr -d ' ') files scanned)"; else echo "privacy-check: FAILED"; fi
 exit "$fail"
